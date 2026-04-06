@@ -1,0 +1,65 @@
+# --- Python Environment ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+bin/
+lib/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+# Optional: Ignore all notebooks if you only want to push .py scripts
+# *.ipynb
+
+# --- Data & Large Files ---
+# We keep the folder structure but ignore the actual heavy data
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+*.csv
+*.xlsx
+*.sql
+*.zip
+*.gz
+
+# --- Model Artifacts ---
+# Ignore saved models (Pickle, Joblib, H5) to keep the repo light
+*.pkl
+*.joblib
+*.h5
+*.model
+*.pb
+
+# --- IDE & OS Specific ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- Testing & Logs ---
+.pytest_cache/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log 

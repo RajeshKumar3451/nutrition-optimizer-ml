@@ -1,0 +1,1 @@
+Entry 1: Setup project structure and virtual environment. Verified Python 3.10 interpreter.
