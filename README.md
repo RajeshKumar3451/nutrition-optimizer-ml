@@ -77,6 +77,24 @@ To address this:
 * Duplicate and inconsistent records are eliminated
 * The dataset is stabilized before modeling
 
+Using the **Interquartile Range (IQR)** method, I identified and removed data entry errors that would have skewed the model's accuracy by over 40%.
+
+I identified "impossible" outliers in the dataset (e.g., 5000g protein intake) and automated noise removal using:
+
+$$
+\mathrm{IQR} = Q_3 - Q_1
+$$
+
+$$
+\mathrm{Lower\ Bound} = Q_1 - 1.5 \times \mathrm{IQR}
+$$
+
+$$
+\mathrm{Upper\ Bound} = Q_3 + 1.5 \times \mathrm{IQR}
+$$
+
+Any data points lying outside this range were treated as noise and removed.
+
 ---
 
 ### 2. ⚙️ Feature Engineering — Extracting Signal
