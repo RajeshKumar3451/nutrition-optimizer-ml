@@ -189,8 +189,11 @@ This project highlights a key lesson in applied machine learning:
 ---
 
 ## 👤 Author
+
 **Rajesh Kumar**
 
-### 🎓 Aspiring Data Scientist
-***[LinkedIn](http://www.linkedin.com/in/rajesh-kumar-9aa2261b7)***
+*Aspiring Data Scientist*
+
+*[Linkedin](http://www.linkedin.com/in/rajesh-kumar-9aa2261b7)*
+
 ---
