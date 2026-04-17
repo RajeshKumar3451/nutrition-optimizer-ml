@@ -194,6 +194,6 @@ This project highlights a key lesson in applied machine learning:
 
 *Aspiring Data Scientist*
 
-🔗 LinkedIn: *[[www.linkedin.com/in/rajesh-kumar-9aa2261b7](http://www.linkedin.com/in/rajesh-kumar-9aa2261b7)]*
+🔗*[[Linkedin](http://www.linkedin.com/in/rajesh-kumar-9aa2261b7)]*
 
 ---
