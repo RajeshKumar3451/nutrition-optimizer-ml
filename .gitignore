@@ -63,3 +63,8 @@ nosetests.xml
 coverage.xml
 *.cover
 *.log 
+venv/
+__pycache__/
+.env
+*.pyc
+nutrition_optimizer.db
