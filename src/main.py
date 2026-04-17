@@ -21,40 +21,47 @@ class NutritionMetrics(BaseModel):
     current_weight_kg: float
     protein_per_kg: float
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-if "src" in BASE_DIR:
-    PROJECT_ROOT = os.path.dirname(BASE_DIR)
-else:
-    PROJECT_ROOT = BASE_DIR
+# --- SMART PATH SEARCHING ---
+def find_path(target_name):
+    # Search in current folder, then one level up, then in common subfolders
+    possible_paths = [
+        target_name,
+        os.path.join("..", target_name),
+        os.path.join("src", target_name),
+        os.path.join("..", "src", target_name)
+    ]
+    for path in possible_paths:
+        if os.path.exists(path):
+            return os.path.abspath(path)
+    return None
 
-MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "nutrition_rf_model.pkl")
+# Find index.html and the models folder
+INDEX_PATH = find_path("index.html")
+MODEL_DIR = find_path("models")
+MODEL_FILE = os.path.join(MODEL_DIR, "nutrition_rf_model.pkl") if MODEL_DIR else None
 
 model = None
-if os.path.exists(MODEL_PATH):
+if MODEL_FILE and os.path.exists(MODEL_FILE):
     try:
-        model = joblib.load(MODEL_PATH)
-        print("✅ ML Brain Loaded!")
+        model = joblib.load(MODEL_FILE)
+        print(f"✅ Model loaded from: {MODEL_FILE}")
     except Exception as e:
-        print(f"❌ Error loading model: {e}")
+        print(f"❌ Load error: {e}")
 else:
-    print(f"❌ Model not found at: {MODEL_PATH}")
+    print(f"❌ Model missing! Looked in: {MODEL_FILE}")
 
+# --- ROUTES ---
 
 @app.get("/")
 async def serve_ui():
-    index_path = os.path.join(PROJECT_ROOT, "index.html")
-    if os.path.exists(index_path):
-        return FileResponse(index_path)
-    return {"error": "index.html not found in root"}
-
-@app.get("/status")
-def get_status():
-    return {"status": "online", "model_loaded": model is not None}
+    if INDEX_PATH:
+        return FileResponse(INDEX_PATH)
+    return {"error": "index.html not found. Check if it was pushed to GitHub!"}
 
 @app.post("/predict")
 def predict_weight_loss(data: NutritionMetrics):
     if model is None:
-        raise HTTPException(status_code=500, detail="Model missing on server.")
+        raise HTTPException(status_code=500, detail="Model file is missing on the server.")
     
     input_df = pd.DataFrame([data.dict()])
     try:
