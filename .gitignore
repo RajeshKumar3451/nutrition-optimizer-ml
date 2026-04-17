@@ -41,10 +41,8 @@ data/processed/*
 
 # --- Model Artifacts ---
 # Ignore saved models (Pickle, Joblib, H5) to keep the repo light
-*.pkl
 *.joblib
 *.h5
-*.model
 *.pb
 
 # --- IDE & OS Specific ---
