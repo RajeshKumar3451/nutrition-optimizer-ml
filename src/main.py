@@ -21,42 +21,38 @@ class NutritionMetrics(BaseModel):
     current_weight_kg: float
     protein_per_kg: float
 
-# --- SMART PATH SEARCHING ---
-def find_path(target_name):
-    # Search in current folder, then one level up, then in common subfolders
-    possible_paths = [
-        target_name,
-        os.path.join("..", target_name),
-        os.path.join("src", target_name),
-        os.path.join("..", "src", target_name)
-    ]
-    for path in possible_paths:
-        if os.path.exists(path):
-            return os.path.abspath(path)
-    return None
+# --- BULLETPROOF PATHING ---
+# 1. Get the path where main.py is (which is inside 'src')
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# 2. Go up one level to reach the Project Root
+PROJECT_ROOT = os.path.dirname(CURRENT_DIR)
 
-# Find index.html and the models folder
-INDEX_PATH = find_path("index.html")
-MODEL_DIR = find_path("models")
-MODEL_FILE = os.path.join(MODEL_DIR, "nutrition_rf_model.pkl") if MODEL_DIR else None
+# 3. Define absolute paths to your assets
+INDEX_PATH = os.path.join(PROJECT_ROOT, "frontend", "index.html")
+MODEL_PATH = os.path.join(PROJECT_ROOT, "models", "nutrition_rf_model.pkl")
 
+# --- LOAD MODEL ---
 model = None
-if MODEL_FILE and os.path.exists(MODEL_FILE):
+if os.path.exists(MODEL_PATH):
     try:
-        model = joblib.load(MODEL_FILE)
-        print(f"✅ Model loaded from: {MODEL_FILE}")
+        model = joblib.load(MODEL_PATH)
+        print(f"✅ Success: Model loaded from {MODEL_PATH}")
     except Exception as e:
-        print(f"❌ Load error: {e}")
+        print(f"❌ Load Error: {e}")
 else:
-    print(f"❌ Model missing! Looked in: {MODEL_FILE}")
+    print(f"❌ ERROR: Model file not found at {MODEL_PATH}")
 
 # --- ROUTES ---
 
 @app.get("/")
 async def serve_ui():
-    if INDEX_PATH:
+    if os.path.exists(INDEX_PATH):
         return FileResponse(INDEX_PATH)
-    return {"error": "index.html not found. Check if it was pushed to GitHub!"}
+    return {
+        "error": "index.html not found",
+        "debug_path_tried": INDEX_PATH,
+        "current_working_dir": os.getcwd()
+    }
 
 @app.post("/predict")
 def predict_weight_loss(data: NutritionMetrics):
@@ -69,19 +65,3 @@ def predict_weight_loss(data: NutritionMetrics):
         return {"predicted_weekly_loss_kg": round(prediction, 2)}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-    
-@app.get("/")
-async def serve_ui():
-    # This specifically looks into the 'frontend' folder
-    paths_to_try = [
-        "index.html", 
-        "frontend/index.html", 
-        "../frontend/index.html",
-        "src/frontend/index.html"
-    ]
-    for path in paths_to_try:
-        if os.path.exists(path):
-            print(f"✅ Found UI at: {path}")
-            return FileResponse(path)
-    
-    return {"error": f"index.html not found. Check GitHub for frontend/index.html"}
