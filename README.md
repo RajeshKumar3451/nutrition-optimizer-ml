@@ -163,7 +163,7 @@ One of the core challenges with this model was **extrapolation**. Since Random F
 
 To solve this, I implemented a **Frontend Validation Layer**:
 
-* - **Mathematical Integrity Check**: Ensures internal consistency before API call  
+* **Mathematical Integrity Check**: Ensures internal consistency before API call  
   Protein per kg ≈ Daily Protein (g) / Weight (kg)
 
 
