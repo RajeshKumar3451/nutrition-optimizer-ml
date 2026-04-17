@@ -79,8 +79,6 @@ To address this:
 
 Using the **Interquartile Range (IQR)** method, I identified and removed data entry errors that would have skewed the model's accuracy by over 40%.
 
-I identified "impossible" outliers in the dataset (e.g., 5000g protein intake) and automated noise removal using:
-
 $$
 \mathrm{IQR} = Q_3 - Q_1
 $$
@@ -116,7 +114,6 @@ Why this matters:
 During initial model testing, an important issue emerged:
 
 * The model produced a **negative R² score**, indicating that it was performing worse than a baseline prediction
-* This revealed that the relationship between features and target was not being captured correctly
 
 Instead of tuning blindly, the issue was approached systematically:
 
@@ -146,33 +143,33 @@ After debugging and refining the data logic:
 ### 🧠 Key Insight
 
 * Strong relationship between **protein intake per kg** and weight loss
-* Reinforces the importance of **relative nutrition over absolute values**
 
 ---
 
-## 🌱 Domain Focus
+## 🌟 Key Features
 
-The pipeline is particularly relevant for **high-protein, plant-based diets**, including:
+* **Real-Time ML Predictions**: Instant weight loss forecasting via a Random Forest Regressor.
+* **Intelligent Input Validation**:
 
-* Soya chunks
-* Lentils
-* Legumes
-
-Useful for:
-
-* Vegetarian and vegan users
-* Fitness-focused individuals
-* Users in emerging markets with plant-based diets
+  * *Logic Verification*: The UI automatically calculates the ratio between Daily Protein and Current Weight. If the user-entered "Protein per kg" doesn't match the math, a validation alert is triggered.
+* **Out-of-Distribution Guardrails**: Built-in alerts warn users when inputs (like a $1000+$ calorie deficit) fall outside the model's high-confidence training range.
+* **Decoupled Full-Stack Architecture**: A clean separation between the FastAPI backend and the Vanilla JS frontend for maximum scalability.
 
 ---
 
-## 📊 Visualization
+## 🛡️ Production Readiness & Robustness
 
-Power BI dashboards enable:
+One of the core challenges with this model was **extrapolation**. Since Random Forest models are strictly bound by their training data, entering extreme values can lead to unrealistic results.
 
-* Interactive trend analysis
-* Clear communication of model insights
-* Actionable recommendations for users
+To solve this, I implemented a **Frontend Validation Layer**:
+
+* **Mathematical Integrity Check**: Ensures the internal consistency of features before they hit the API.
+
+[
+\text{Protein per kg} \approx \frac{\text{Daily Protein (g)}}{\text{Weight (kg)}}
+]
+
+* **Domain-Specific Constraints**: Applied "soft caps" on inputs based on biological reality and dataset distribution (e.g., flagging calorie deficits $> 1000\text{ kcal}$ as potential outliers).
 
 ---
 
@@ -191,14 +188,6 @@ This project highlights a key lesson in applied machine learning:
 
 > Better data and better features matter more than complex models.
 
-By focusing on:
-
-* Robust data cleaning
-* Meaningful feature engineering
-* Practical model selection
-
-the pipeline successfully converts unreliable inputs into actionable health insights.
-
 ---
 
 ## 👤 Author
@@ -207,6 +196,6 @@ the pipeline successfully converts unreliable inputs into actionable health insi
 
 *Aspiring Data Scientist*
 
-🔗 LinkedIn: *[www.linkedin.com/in/rajesh-kumar-9aa2261b7]*
+🔗 LinkedIn: *[[www.linkedin.com/in/rajesh-kumar-9aa2261b7](http://www.linkedin.com/in/rajesh-kumar-9aa2261b7)]*
 
 ---
