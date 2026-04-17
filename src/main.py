@@ -69,3 +69,19 @@ def predict_weight_loss(data: NutritionMetrics):
         return {"predicted_weekly_loss_kg": round(prediction, 2)}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@app.get("/")
+async def serve_ui():
+    # This specifically looks into the 'frontend' folder
+    paths_to_try = [
+        "index.html", 
+        "frontend/index.html", 
+        "../frontend/index.html",
+        "src/frontend/index.html"
+    ]
+    for path in paths_to_try:
+        if os.path.exists(path):
+            print(f"✅ Found UI at: {path}")
+            return FileResponse(path)
+    
+    return {"error": f"index.html not found. Check GitHub for frontend/index.html"}
