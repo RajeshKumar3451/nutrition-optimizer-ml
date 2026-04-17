@@ -163,11 +163,8 @@ One of the core challenges with this model was **extrapolation**. Since Random F
 
 To solve this, I implemented a **Frontend Validation Layer**:
 
-* **Mathematical Integrity Check**: Ensures the internal consistency of features before they hit the API.
-
-[
-\text{Protein per kg} \approx \frac{\text{Daily Protein (g)}}{\text{Weight (kg)}}
-]
+* - **Mathematical Integrity Check**: Ensures internal consistency before API call  
+  Protein per kg ≈ Daily Protein (g) / Weight (kg)
 
 * **Domain-Specific Constraints**: Applied "soft caps" on inputs based on biological reality and dataset distribution (e.g., flagging calorie deficits $> 1000\text{ kcal}$ as potential outliers).
 
