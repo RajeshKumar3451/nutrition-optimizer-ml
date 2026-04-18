@@ -5,8 +5,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -53,6 +55,13 @@ async def serve_ui():
         "debug_path_tried": INDEX_PATH,
         "current_working_dir": os.getcwd()
     }
+
+@app.get("/favicon.ico")
+async def favicon():
+    favicon_path = os.path.join(PROJECT_ROOT, "frontend", "favicon.ico")
+    if os.path.exists(favicon_path):
+        return FileResponse(favicon_path)
+    return {"error": "favicon not found"}
 
 @app.post("/predict")
 def predict_weight_loss(data: NutritionMetrics):
