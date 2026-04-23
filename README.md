@@ -197,3 +197,5 @@ This project highlights a key lesson in applied machine learning:
 *[Linkedin](http://www.linkedin.com/in/rajesh-kumar-9aa2261b7)*
 
 ---
+
+# ⭐ If you found this useful, give it a star!
