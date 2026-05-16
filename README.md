@@ -17,47 +17,6 @@ The **Nutrition Optimizer** focuses on building a machine learning pipeline that
 * Predict **weekly weight loss trends** based on body composition and diet
 
 Instead of relying on raw calorie counting, the system emphasizes **relative nutrition metrics**, making predictions more aligned with real human physiology.
----
-
-## 🧱 High-Level ML System Architecture
-
-```mermaid
-graph TB
-    subgraph Client [Client Browser Layer]
-        A[Vanilla JS Dashboard] -->|Local Validation| B[Input Guardrails]
-    end
-
-    subgraph Render [Render Production Cloud Engine]
-        direction TB
-        C[FastAPI Router] 
-        D[Absolute Pathing Engine]
-        E[Joblib Serializer]
-        F[Scikit-Learn Inference Pipeline]
-        
-        subgraph Directory [Isolated Project Topology]
-            G[frontend/index.html]
-            H[(models/nutrition_rf_model.pkl)]
-        end
-    end
-
-    A -->|1. HTTPS GET /| C
-    C --> D
-    D -->|Look Down| G
-    G -->|2. Return FileResponse| C
-    C -->|3. Render Static Page| A
-    
-    B -->|4. HTTPS POST /predict| C
-    E -->|Unpickle Model Binary| H
-    E -->|Stream Weights| F
-    C -->|5. Construct Pandas DataFrame| F
-    F -->|6. Execute Random Forest Regressor| F
-    F -->|7. Return Inference JSON| C
-    C -->|8. Update UI Dynamically| A
-
-    style Client fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style Render fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style Directory fill:#fff3e0,stroke:#f57c00,stroke-width:1px
----
 
 ---
 
